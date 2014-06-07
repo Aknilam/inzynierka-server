@@ -1,0 +1,25 @@
+<ons-page class="center" ng-controller="app">
+    <ons-navigator-toolbar title="Page1"  right-button-icon="fa fa-lg fa-angle-right"
+                           on-right-button-click="ons.navigator.pushPage('page2.html')">
+    </ons-navigator-toolbar>
+	{{map | json}}<br>
+	{{marker | json}}<br>
+	{{window1 | json}}
+	
+	<google-map
+		center='map.center' 
+		zoom='map.zoom'
+		pan='map.pan'>
+			<marker coords='marker.coords'
+				events='marker.events'
+				showWindow='marker.showWindow'>
+					<window
+						show='marker.showWindow'
+						templateUrl='window1.templateUrl'
+						isIconVisibleOnClick='window1.isIconVisibleOnClick'
+						closeClick="window1.closeClick">
+					</window>
+			</marker>
+	</google-map>
+
+</ons-page>
