@@ -1,0 +1,113 @@
+<ons-page ng-controller="mmMaterialsCtrl">
+  <ons-navigator-toolbar title="Materials" right-button-icon="fa fa-lg fa-angle-right"
+     on-right-button-click="ons.navigator.pushPage('pageProject.html')">
+  </ons-navigator-toolbar>
+  <div class="center">
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorProject.html')">
+      Project
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMap.html')">
+      Map
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorTags.html')">
+      Tags
+    </ons-button>
+
+    <section style="padding: 10px;">
+      <button
+        type="button"
+        class="btn btn-default btn-xs"
+        style="position: relative; bottom: 2px;"
+        ng-class="{'active': $root.MATERIALS.showAll}"
+        ng-click="$root.MATERIALS.showAll = !$root.MATERIALS.showAll; $root.MATERIALS.updateMapData()">
+          ALL
+      </button>
+      <button
+        type="button"
+        class="btn btn-default btn-xs"
+        style="position: relative; bottom: 2px;"
+        ng-class="{'active': $root.NONTAGGED}"
+        ng-click="$root.NONTAGGED = !$root.NONTAGGED; $root.MATERIALS.updateMapData('nontagged')">
+          non-tagged
+      </button>
+      <ons-checkbox class="pointer" ng-repeat="tag in $root.TAGS.data" ng-model="tag.checked" ng-click="$root.MATERIALS.updateMapData()">
+        {{tag.name}}
+      </ons-checkbox>
+    </section>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div
+          ng-include="'templates/materialForm.html'"
+          ng-init="submit = $root.MATERIALS.add; action='Add'">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-default" ng-click="editable = !editable">Edit</button>
+        <div class="list-element" full-height>
+          <accordion close-others="true">
+            <accordion-group ng-repeat="material in $root.MATERIALS.mapData | orderObjectBy:'name'">
+              <accordion-heading>
+                <span ng-show="!editable">
+                  {{material.name}}
+                  <button type="button" class="close pull-right" style="outline: none;" ng-click="$root.MATERIALS.remove($event, material)"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+                </span>
+                <span ng-show="editable">
+                  <form role="form inline" role="form">
+                    <div class="row">
+                      <div class="col-xs-2">
+                        <button type="submit" class="btn btn-success" ng-click="$root.MATERIALS.edit(material)">Save</button>
+                      </div>
+                      <div class="col-xs-10">
+                        <input type="text" ng-model="material.name" class="form-control">
+                      </div>
+                    </div>
+                  </form>
+                </span>
+              </accordion-heading>
+              <dl class="dl-horizontal">
+                <dt>Description</dt>
+                <dd>{{material.description}}</dd>
+                <dt>Coordinates</dt>
+                <dd>({{material.lat}}, {{material.lng}})</dd>
+                <dt ng-show="material.angle">Angle</dt>
+                <dd ng-show="material.angle">
+                  <canvas width="60" height="60" id="canvas" mm-compass="material.iconAngle" disallow-change="true"></canvas>
+                  {{material.iconAngle}}
+                </dd>
+                <dt ng-show="material.fileName">Image</dt>
+                <dd ng-show="material.fileName">
+                  <img
+                    ng-if="material.fileName"
+                    style="max-width: 100%; max-height: 50%; min-height: 200px;"
+                    ng-src="materials/{{$root.PROJECT.actual.folderName}}/{{material.fileName}}">
+                </dd>
+                <dt>Tags</dt>
+                <dd>
+                  <tags-input
+                    ng-model="material.pluginTags"
+                    display-property="name"
+                    on-tag-added="$root.MATERIALS.addPossibleTag(material, $tag)"
+                    on-tag-removed="$root.MATERIALS.removeTag(material, $tag)">
+                      <auto-complete source="$root.TAGS.getDataFor($query)"></auto-complete>
+                  </tags-input>
+                  <select class="form-control" ng-model="selectedTag" ng-init="selectedTag = $root.TAGS.getFirstProperty($root.TAGS.data)" ng-options="tag.name for (name, tag) in $root.TAGS.data">
+                  </select>
+                  <button
+                    type="submit"
+                    class="btn btn-default"
+                    ng-click="$root.MATERIALS.addTag(material, selectedTag)">
+                      Add tag
+                  </button>
+                </dd>
+              </dl>
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ons-page>

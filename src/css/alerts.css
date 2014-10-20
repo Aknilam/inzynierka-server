@@ -1,0 +1,19 @@
+#alerts {
+  width: 30%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 20px;
+}
+
+.alert {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.alert .timer {
+  font-weight: normal;
+  float: right;
+  font-size: 10px;
+}

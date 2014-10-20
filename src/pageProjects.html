@@ -1,0 +1,53 @@
+<ons-page>
+  <div class="center">
+    <ons-navigator-toolbar title="Projects">
+    </ons-navigator-toolbar>
+    <ons-button ng-click="ons.slidingMenu.toggleMenu()">
+      Toggle Menu
+    </ons-button>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row"><div class="col-md-12">
+          <form role="form">
+            <div class="form-group">
+              <label>Project name</label>
+              <input type="text" ng-model="projectName" placeholder="Project name" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea type="text" ng-model="projectDescription" placeholder="Description" class="form-control">
+              </textarea>
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="$root.PROJECTS.add(projectName, projectDescription); projectName = ''; projectDescription = '';">Add project</button>
+          </form>
+        </div></div>
+        <div class="row"><div class="col-md-12">
+          <form role="form">
+            <div class="form-group">
+              <label>Project access code</label>
+              <input type="text" ng-model="accessCode" placeholder="Project name" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="$root.PROJECTS.join(accessCode); accessCode = '';">Join to project</button>
+          </form>
+        </div></div>
+      </div>
+      <div class="col-md-6">
+        <div class="list-element" full-height>
+          <ul class="panel-body list-group">
+            <li
+              ng-repeat="project in $root.PROJECTS.data | orderObjectBy:'name'"
+              class="pointer-bootstrap list-group-item"
+              ng-click="$root.PROJECT.set(project); ons.slidingMenu.setAbovePage('navigatorMap.html')">
+                {{project.name}}
+                <button type="button" class="close pull-right" style="outline: none;" ng-click="$root.PROJECTS.remove($event, project)"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ons-page>

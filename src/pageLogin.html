@@ -1,0 +1,60 @@
+<ons-page ng-controller="mmLoginCtrl">
+  <h1 class="center">
+    <span ng-show="LOGIN.state === LOGIN.states.unauthorized">
+      <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorRegister.html')">
+        Register page
+      </ons-button>
+    </span>
+  </h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <span ng-show="LOGIN.state === LOGIN.states.unauthorized">
+          <form role="form">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Login</label>
+              <input type="text" ng-model="l_username" class="form-control" id="exampleInputEmail1" placeholder="Login">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" ng-model="l_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="login(l_username, l_password)">Login</button>
+          </form>
+
+        </span>
+
+        <span ng-show="LOGIN.state === LOGIN.states.authenticating">
+          Login in process
+        </span>
+
+        <div ng-show="LOGIN.state === LOGIN.states.authorized">
+          Logged in as: `{{LOGIN.me.username}}`
+
+          <div ng-show="!changePassword">
+            <button type="button" class="btn btn-default" ng-click="changePassword = !changePassword">Change password</button>
+          </div>
+          <div ng-show="changePassword">
+            <form role="form">
+              <div class="form-group">
+                <label for="exampleInputPassword2">Password</label>
+                <input type="password" ng-model="r_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword2">Repeat password</label>
+                <input type="password" ng-model="r_password2" class="form-control" id="exampleInputPassword2" placeholder="Repeat password">
+              </div>
+              <button type="submit" class="btn btn-default" ng-click="$root.LOGIN.changePassword(r_password, r_password2); r_password = ''; r_password2 = ''">Change password</button>
+              <button type="button" class="btn btn-default" ng-click="changePassword = !changePassword; r_password = ''; r_password2 = ''">Cancel</button>
+            </form>
+          </div>
+          <button type="button" class="btn btn-default center-element" ng-click="LOGIN.logout()">Logout</button>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+
+</ons-page>

@@ -1,0 +1,29 @@
+{
+  "name": "silva-server",
+  "version": "0.1.1",
+  "main": "src\\api\\server.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.2.25",
+    "angular-bootstrap": "0.11.0",
+    "bootstrap": "3.2.0",
+    "jquery": "2.1.1",
+    "angular-cookies": "1.2.25",
+    "angular-ui-router": "0.2.11",
+    "ng-tags-input": "2.1.1",
+    "leaflet": "0.7.3",
+    "leaflet-plugins": "1.2.0",
+    "angular-leaflet-directive": "https://github.com/tombatossals/angular-leaflet-directive/archive/504af8122d9ee570a3b75c876b268f7f64975aa7.zip",
+    "ng-file-upload": "1.6.12",
+    "jquery-ui": "1.10.4",
+    "onsenui": "1.0.4",
+    "font-awesome": "4.2.0",
+    "underscore": "1.6.0",
+    "angular-pageslide-directive": "0.1.8",
+    "CryptoJS": "https://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.25",
+    "closure-compiler": "https://closure-compiler.googlecode.com/files/compiler-20130603.zip"
+  }
+}

@@ -1,0 +1,6 @@
+<div id="alerts">
+  <alert ng-repeat="alert in alerts.list" type="{{alert.type}}" close="alerts.close(alert)">
+    {{alert.text}}
+    <span class="timer" ng-show="alert.counter > 0">{{alert.counter}} {{alert.counter === 1 ? 'second' : 'seconds'}} remaining</span>
+  </alert>
+</div>

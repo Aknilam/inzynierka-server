@@ -1,0 +1,58 @@
+<ons-page>
+  <div class="center">
+    <ons-navigator-toolbar title="Tags" right-button-icon="fa fa-lg fa-angle-right"
+       on-right-button-click="ons.navigator.pushPage('pageProject.html')">
+    </ons-navigator-toolbar>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorProject.html')">
+      Project
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMap.html')">
+      Map
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMaterials.html')">
+      Materials
+    </ons-button>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form role="form">
+          <div class="form-group">
+            <label>Tag name</label>
+            <input type="text" ng-model="tagName" placeholder="Tag name" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-success" ng-click="$root.TAGS.add(tagName); tagName = '';">Add tag</button>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <button type="button" class="btn btn-default" ng-click="editable = !editable">Edit</button>
+        <div class="list-element" full-height>
+          <ul class="panel-body list-group">
+            <li class="pointer-bootstrap list-group-item" ng-repeat="tag in $root.TAGS.data | orderObjectBy:'name'">
+              <!-- <span class="badge">14</span> -->
+              <span ng-show="!editable">
+                {{tag.name}}
+                <button type="button" class="close pull-right" style="outline: none;" ng-click="$root.TAGS.remove($event, tag)"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+              </span>
+
+              <span ng-show="editable">
+                <form class="form inline" role="form">
+                  <div class="row">
+                    <div class="col-xs-2">
+                      <button type="submit" class="btn btn-success" ng-click="$root.TAGS.edit(tag)">Save</button>
+                    </div>
+                    <div class="col-xs-10">
+                      <input type="text" ng-model="tag.name" class="form-control">
+                    </div>
+                  </div>
+                </form>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ons-page>

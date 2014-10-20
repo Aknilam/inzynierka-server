@@ -1,0 +1,45 @@
+<ons-page class="center" ng-controller="mmMapCtrl">
+  <ons-navigator-toolbar title="Map"  right-button-icon="fa fa-lg fa-angle-right"
+     on-right-button-click="ons.navigator.pushPage('pageProject.html')">
+  </ons-navigator-toolbar>
+  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorProject.html')">
+    Project
+  </ons-button>
+  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMaterials.html')">
+    Materials
+  </ons-button>
+  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorTags.html')">
+    Tags
+  </ons-button>
+  <ons-button 
+    ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
+    ng-click="$root.PROJECT.setPosition(map)">
+      Save project position
+  </ons-button>
+  {{map.lat}} {{map.lng}} {{map.zoom}}<br>
+  {{$root.map.lat}} {{$root.map.lng}} {{$root.map.zoom}}
+
+  <section style="padding: 10px;">
+    <button
+      type="button"
+      class="btn btn-default btn-xs"
+      style="position: relative; bottom: 2px;"
+      ng-class="{'active': $root.MATERIALS.showAll}"
+      ng-click="$root.MATERIALS.showAll = !$root.MATERIALS.showAll; $root.MATERIALS.updateMapData()">
+        ALL
+    </button>
+    <button
+      type="button"
+      class="btn btn-default btn-xs"
+      style="position: relative; bottom: 2px;"
+      ng-class="{'active': $root.NONTAGGED}"
+      ng-click="$root.NONTAGGED = !$root.NONTAGGED; $root.MATERIALS.updateMapData('nontagged')">
+        non-tagged
+    </button>
+    <ons-checkbox class="pointer" ng-repeat="tag in $root.TAGS.data" ng-model="tag.checked" ng-click="$root.MATERIALS.updateMapData()">
+      {{tag.name}}
+    </ons-checkbox>
+  </section>
+
+  <leaflet center="map" markers="$root.MATERIALS.mapData" event-broadcast="events" height="480px" width="100%" full-height></leaflet>
+</ons-page>

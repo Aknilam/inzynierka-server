@@ -1,0 +1,37 @@
+<ons-page ng-controller="mmLoginCtrl">
+  <ons-navigator-toolbar title="Register">
+  </ons-navigator-toolbar>
+  <h1 class="center">
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorLogin.html')">
+      Login page
+    </ons-button>
+  </h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <span ng-show="LOGIN.state === LOGIN.states.unauthorized">
+          <form role="form">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Login</label>
+              <input type="text" ng-model="r_username" class="form-control" id="exampleInputEmail1" placeholder="Login">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword2">Password</label>
+              <input type="password" ng-model="r_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword2">Repeat password</label>
+              <input type="password" ng-model="r_password2" class="form-control" id="exampleInputPassword2" placeholder="Repeat password">
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="register(r_username, r_password, r_password2)">Register</button>
+          </form>
+
+        </span>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+
+</ons-page>

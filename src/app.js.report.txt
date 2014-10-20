@@ -1,0 +1,9 @@
+lib\angular-ui-router.js:837: WARNING - Parse error. Unexpected end of file
+  for (/**/; i < nTotal; i++) {
+          ^
+
+lib\angular-ui-router.js:925: WARNING - Parse error. Unexpected end of file
+  for (/**/; i < nTotal; i++) {
+          ^
+
+0 error(s), 2 warning(s)

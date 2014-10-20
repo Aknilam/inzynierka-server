@@ -1,0 +1,180 @@
+<ons-page>
+  <div class="center">
+    <ons-navigator-toolbar title="Project">
+    </ons-navigator-toolbar>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMap.html')">
+      Map
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMaterials.html')">
+      Materials
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorTags.html')">
+      Tags
+    </ons-button>
+    <h1>
+      Actual project
+      <button
+        type="button"
+        class="btn btn-default"
+        ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
+        ng-click="editable = !editable">
+          Edit
+      </button>
+    </h1>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div ng-show="!editable">
+          <dl class="dl-horizontal">
+            <dt>
+              Project name
+            </dt>
+            <dd>
+              {{$root.PROJECT.actual.name}}
+            </dd>
+            <dt>
+              Description
+            </dt>
+            <dd>
+              {{$root.PROJECT.actual.description}}
+            </dd>
+            <dt>
+              owner
+            </dt>
+            <dd>
+              <span ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id">me</span>
+              <span ng-show="$root.PROJECT.actual.owner !== $root.LOGIN.me.id">{{$root.PROJECT.actual.ownerData}}</span>
+            </dd>
+            <dt>
+              editable (for members)
+            </dt>
+            <dd>
+              <span ng-show="$root.PROJECT.actual.editable">
+                YES
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
+                  ng-click="$root.PROJECT.deny()">
+                    Deny
+                </button>
+              </span>
+              <span ng-show="!$root.PROJECT.actual.editable">
+                NO
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
+                  ng-click="$root.PROJECT.allow()">
+                    Allow
+                </button>
+              </span>
+            </dd>
+            <dt>
+              opened (for members)
+            </dt>
+            <dd>
+              <span ng-show="$root.PROJECT.actual.accessible">
+                YES
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id"
+                  ng-click="$root.PROJECT.close()">
+                    Close
+                </button>
+              </span>
+              <span ng-show="!$root.PROJECT.actual.accessible">
+                NO
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id"
+                  ng-click="$root.PROJECT.open()">
+                    Open
+                </button>
+              </span>
+            </dd>
+            <dt ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin">
+              access code
+            </dt>
+            <dd ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin">
+              {{$root.PROJECT.actual.accessCode}}
+            </dd>
+            <dt>
+              members
+            </dt>
+            <dd>
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <th>
+                      #
+                    </th>
+                    <th>
+                      Username
+                    </th>
+                    <th>
+                      Role
+                    </th>
+                  </tr>
+                </tbody>
+                <body>
+                  <tr ng-repeat="member in $root.PROJECT.actual.members">
+                    <td>
+                      {{$index + 1}}
+                    </td>
+                    <td>
+                      {{member.username}}
+                    </td>
+                    <td>
+                      <span ng-show="member.role !== 'owner' && member.id !== $root.PROJECT.actual.owner">
+                        {{member.role}}
+                      </span>
+                      <span ng-show="member.role === 'owner' || member.id === $root.PROJECT.actual.owner">
+                        owner
+                      </span>
+                      <span ng-show="member.id !== $root.PROJECT.actual.owner && ($root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin)">
+                        <button
+                          type="button"
+                          class="btn btn-default"
+                          ng-show="member.role === 'user' && member.id !== $root.PROJECT.actual.owner"
+                          ng-click="$root.PROJECT.giveAdmin(member)">
+                            Give admin
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-default"
+                          ng-show="member.role === 'admin' && member.id !== $root.LOGIN.me.id"
+                          ng-click="$root.PROJECT.takeAdmin(member)">
+                            Take admin
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                </body>
+              </table>
+            </dd>
+          </dl>
+        </div>
+        <form role="form" ng-show="editable">
+          <div class="form-group">
+            <label>Project name</label>
+            <input type="text" ng-model="$root.PROJECT.actual.name" placeholder="Project name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea type="text" ng-model="$root.PROJECT.actual.description" placeholder="Description" class="form-control">
+            </textarea>
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="$root.PROJECT.edit()">Save project</button>
+        </form>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+
+</ons-page>

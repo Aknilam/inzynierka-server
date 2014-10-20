@@ -1,0 +1,28 @@
+.left-menu {
+  background-color: rgb(177, 177, 177);
+}
+
+.pointer, .topcoat-button, .pointer-bootstrap, .panel-heading, .list-group-item {
+  cursor: pointer;
+}
+
+.pointer:hover {
+  background-color: #444;
+  color: #FFF;
+}
+
+.pointer-bootstrap:hover, .panel-heading:hover, .list-group-item:hover {
+  background-color: #e6e6e6;
+}
+
+.topcoat-button:hover {
+  background-color: #707070;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
+  background-color: black;
+}
+
+.ng-pageslide {
+  background: #eee;
+}
