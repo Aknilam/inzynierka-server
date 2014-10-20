@@ -1,19 +1,20 @@
 <div class="modal-content">
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()">&times;</button>
-    <h4 class="modal-title">Add a new material</h4>
+    <h4 class="modal-title">Edit material</h4>
   </div>
   <div class="modal-body">
     <div
       ng-include="'templates/materialForm.html'"
-      ng-init="submit = ok; selected = $root.MATERIALS.data.selected; setSelectedFile = $root.MATERIALS.setSelectedFile; loadImage = $root.MATERIALS.loadImage;">
+      ng-init="submit = ok; selected = material; setSelectedFile = onFileSelect; loadImage = loadMaterialImage;">
+  </div>
   </div>
   <div class="modal-footer">
     <button
       type="submit"
       ng-click="ok()"
       class="btn btn-success">
-        Add material
+        Save
     </button>
     <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
   </div>

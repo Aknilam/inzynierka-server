@@ -13,6 +13,7 @@
     "ng-tags-input": "2.1.1",
     "leaflet": "0.7.3",
     "leaflet-plugins": "1.2.0",
+    "leaflet.markercluster": "0.4.0",
     "angular-leaflet-directive": "https://github.com/tombatossals/angular-leaflet-directive/archive/504af8122d9ee570a3b75c876b268f7f64975aa7.zip",
     "ng-file-upload": "1.6.12",
     "jquery-ui": "1.10.4",

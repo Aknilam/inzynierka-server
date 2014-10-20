@@ -70,21 +70,25 @@ module.exports.getAll = function(req, res, next) {
 
 var folderBase = 'src\\materials\\';
 
-var saveFile = function(folderName, file, callback) {
+var saveFile = function(folderName, file, callback, name) {
   console.log('save file');
   fs.readFile(file.path, function (err, data) {
     var extention = file.name.split('.').pop();
     if (extention) {
       extention = '.' + extention;
     }
-    var newFileName = Math.random().toString(36).slice(2) + extention;
+    var newFileName;
+    if (name && name !== null) {
+      newFileName = name + extention;
+    } else {
+      newFileName = Math.random().toString(36).slice(2) + extention;
+    }
     var newPath = folderBase + folderName + '\\' + newFileName;
     fs.writeFile(newPath, data, function (err) {
       callback(newFileName);
     });
   });
 };
-
 
 module.exports.add = function(req, res, next) {
 
@@ -141,6 +145,41 @@ module.exports.add = function(req, res, next) {
   }
 };
 
+module.exports.edit = function(req, res) {
+  var id = req.params.id;
+  var projectId = req.session.projectId;
+  var rMaterial = req.body;
+
+  var onSaveFile = function(id, reqMaterial) {
+    console.log('onSaveFile');
+    return function(fileName) {
+      MATERIAL.find({where: {id: id}}).success(function(material) {
+        material.updateAttributes({
+          name: reqMaterial.name,
+          description: reqMaterial.description,
+          lat: reqMaterial.lat,
+          lng: reqMaterial.lng,
+          angle: reqMaterial.angle,
+          fileName: fileName
+        }).success(function(savedMaterial) {
+          res.send(savedMaterial);
+        });
+      });
+    }
+  };
+
+  if (id && rMaterial) {
+    if (req.files && req.files.file) {
+      console.log('file received');
+      PROJECT.find({where: {id: projectId}}).success(function(project) {
+        saveFile(project.folderName, req.files.file, onSaveFile(id, rMaterial), rMaterial.fileName);
+      });
+    } else {
+      onSaveFile(id, rMaterial)(rMaterial.fileName);
+    }
+  }
+};
+
 module.exports.addTag = function(req, res, next) {
   var material = req.body.material;
   var reqTag = req.body.tag;
@@ -181,22 +220,6 @@ module.exports.removeTag = function(req, res, next) {
 
     });
   }
-};
-
-module.exports.edit = function(req, res) {
-  var id = req.params.id;
-  var reqMaterial = req.body;
-  MATERIAL.find({where: {id: id}}).success(function(material) {
-    material.updateAttributes({
-      name: reqMaterial.name,
-      description: reqMaterial.description,
-      lat: reqMaterial.lat,
-      lng: reqMaterial.lng,
-      angle: reqMaterial.angle
-    }).success(function(material) {
-      res.send(material);
-    });
-  });
 };
 
 module.exports.remove = function(req, res) {

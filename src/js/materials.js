@@ -6,9 +6,9 @@
     function($rootScope, $modal, PROJECT, MATERIAL, TAGS, http, alert, answer) {
       var icon = {
         iconUrl: 'images/arrow.png',
-        iconSize:     [30, 30], // size of the icon
+        iconSize:     [60, 60], // size of the icon
         shadowSize:   [0, 0], // size of the shadow
-        iconAnchor:   [30 / 2, 30 / 2], // point of the icon which will correspond to marker's location
+        iconAnchor:   [60 / 2, 60 / 2], // point of the icon which will correspond to marker's location
         shadowAnchor: [0, 0],  // the same for the shadow
         popupAnchor:  [0, 0] // point from which the popup should open relative to the iconAnchor
       };
@@ -133,15 +133,34 @@
           }
         },
 
-        add: function() {
-          if (angular.isDefined(mmMaterials.data.selected)) {
-            var name = mmMaterials.data.selected.name,
-              description = mmMaterials.data.selected.description,
-              lat = mmMaterials.data.selected.lat,
-              lng = mmMaterials.data.selected.lng,
-              angle = mmMaterials.data.selected.iconAngle,
-              file = mmMaterials.selectedFile;
+        add: function(material, file) {
+          var ifSave = false,
+            name,
+            description,
+            lat,
+            lng,
+            angle;
 
+          if (angular.isDefined(material)) {
+            name = material.name;
+            description = material.description;
+            lat = material.lat;
+            lng = material.lng;
+            angle = material.iconAngle;
+
+            ifSave = true;
+          } else if (angular.isDefined(mmMaterials.data.selected)) {
+            name = mmMaterials.data.selected.name;
+            description = mmMaterials.data.selected.description;
+            lat = mmMaterials.data.selected.lat;
+            lng = mmMaterials.data.selected.lng;
+            angle = mmMaterials.data.selected.iconAngle;
+            file = mmMaterials.selectedFile;
+
+            ifSave = true;
+          }
+
+          if (ifSave) {
             http.sendFile('materials/add', file, mmMaterials._create({}, name, description, lat, lng, angle), function(material) {
               mmMaterials.data[material.id] = mmMaterials._create({
                 id: material.id,
@@ -233,30 +252,61 @@
           }
         },
 
-        edit: function(material) {
-          http.edit('materials', material, function(savedMaterial) {
-            mmMaterials.data[savedMaterial.id] = mmMaterials._create(material, savedMaterial.name, savedMaterial.description,
-              savedMaterial.lat, savedMaterial.lng, savedMaterial.angle, savedMaterial.fileName);
+        edit: function(material, file) {
+          if (angular.isUndefined(material.id)) {
+            mmMaterials.add(material, file);
+          } else {
+            material.angle = material.iconAngle;
+            http.sendFile('materials/edit/' + material.id, file, material, function(resMaterial) {
+              mmMaterials.data[material.id] = mmMaterials._create({
+                id: resMaterial.id,
+                createdAt: resMaterial.createdAt,
+                updatedAt: resMaterial.updatedAt
+              }, resMaterial.name, resMaterial.description, resMaterial.lat, resMaterial.lng, resMaterial.angle, resMaterial.fileName);
 
-            mmMaterials.updateMapData();
-            alert.success('Material `' + savedMaterial.name + '` saved successfully');
-          }, answer.project.failure);
+              MATERIAL.set(mmMaterials.data[material.id]);
+
+              mmMaterials.updateMapData();
+              alert.success('Material `' + resMaterial.name + '` saved successfully');
+            }, answer.project.failure, 'PUT');
+          }
         },
 
         remove: function($event, material) {
           $event.preventDefault();
           $event.stopPropagation();
-          http.remove('materials', material, function(data) {
-            if (data) {
-              delete mmMaterials.data[material.id];
+          var modalInstance = $modal.open({
+            templateUrl: 'templates\\confirm.html',
+            controller: function ($scope, $modalInstance) {
+              $scope.text = 'Remove material';
+              $scope.content = 'Do you want to remove material `' + material.name + '`?';
+              $scope.answer = {
+                accept: 'Yes',
+                reject: 'No'
+              };
+              $scope.ok = function() {
+                $modalInstance.close();
+              };
 
-              mmMaterials.updateMapData();
-              alert.success('Material `' + material.name + '` removed successfully');
-              if (material === MATERIAL.focused) {
-                MATERIAL.unset();
-              }
+              $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+              };
             }
-          }, answer.project.failure);
+          });
+
+          modalInstance.result.then(function() {
+            http.remove('materials', material, function(data) {
+              if (data) {
+                delete mmMaterials.data[material.id];
+
+                mmMaterials.updateMapData();
+                alert.success('Material `' + material.name + '` removed successfully');
+                if (material === MATERIAL.focused) {
+                  MATERIAL.unset();
+                }
+              }
+            }, answer.project.failure);
+          });
         },
 
         _create: function(base, name, description, lat, lng, angle, fileName, tags) {
@@ -295,6 +345,7 @@
             base.pluginTags = [];
           }
           base.icon = icon;
+          base.layer = 'project';
           return base;
         }
 

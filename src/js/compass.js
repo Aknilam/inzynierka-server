@@ -91,7 +91,7 @@
           //Translate canvas to center
           ctx.translate(centerX, centerY);
           ctx.rotate(radians);
-          ctx.drawImage(img, -img.width / 2, -img.height / 2);
+          ctx.drawImage(img, -60 / 2, -60 / 2, 60, 60 * img.height / img.width);
           ctx.stroke();
           ctx.restore();
           if (drawing) {

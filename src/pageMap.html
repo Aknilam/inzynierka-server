@@ -1,45 +1,73 @@
-<ons-page class="center" ng-controller="mmMapCtrl">
-  <ons-navigator-toolbar title="Map"  right-button-icon="fa fa-lg fa-angle-right"
-     on-right-button-click="ons.navigator.pushPage('pageProject.html')">
-  </ons-navigator-toolbar>
-  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorProject.html')">
-    Project
-  </ons-button>
-  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMaterials.html')">
-    Materials
-  </ons-button>
-  <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorTags.html')">
-    Tags
-  </ons-button>
-  <ons-button 
-    ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
-    ng-click="$root.PROJECT.setPosition(map)">
-      Save project position
-  </ons-button>
-  {{map.lat}} {{map.lng}} {{map.zoom}}<br>
-  {{$root.map.lat}} {{$root.map.lng}} {{$root.map.zoom}}
+<ons-page ng-controller="mmMapCtrl">
+  <div class="center">
+    <ons-navigator-toolbar title="Map"  right-button-icon="fa fa-lg fa-angle-right"
+       on-right-button-click="ons.navigator.pushPage('pageProject.html')">
+    </ons-navigator-toolbar>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorProject.html')">
+      Project
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorMaterials.html')">
+      Materials
+    </ons-button>
+    <ons-button ng-click="ons.slidingMenu.setAbovePage('navigatorTags.html')">
+      Tags
+    </ons-button>
+    <ons-button 
+      ng-show="$root.PROJECT.actual.owner === $root.LOGIN.me.id || $root.PROJECT.actual.amIAdmin"
+      ng-click="$root.PROJECT.setPosition(map)">
+        Save project position
+    </ons-button>
 
-  <section style="padding: 10px;">
-    <button
-      type="button"
-      class="btn btn-default btn-xs"
-      style="position: relative; bottom: 2px;"
-      ng-class="{'active': $root.MATERIALS.showAll}"
-      ng-click="$root.MATERIALS.showAll = !$root.MATERIALS.showAll; $root.MATERIALS.updateMapData()">
-        ALL
-    </button>
-    <button
-      type="button"
-      class="btn btn-default btn-xs"
-      style="position: relative; bottom: 2px;"
-      ng-class="{'active': $root.NONTAGGED}"
-      ng-click="$root.NONTAGGED = !$root.NONTAGGED; $root.MATERIALS.updateMapData('nontagged')">
-        non-tagged
-    </button>
-    <ons-checkbox class="pointer" ng-repeat="tag in $root.TAGS.data" ng-model="tag.checked" ng-click="$root.MATERIALS.updateMapData()">
-      {{tag.name}}
-    </ons-checkbox>
-  </section>
+    <section style="padding: 10px;">
+      <button
+        type="button"
+        class="btn btn-default btn-xs"
+        style="position: relative; bottom: 2px;"
+        ng-class="{'active': $root.MATERIALS.showAll}"
+        ng-click="$root.MATERIALS.showAll = !$root.MATERIALS.showAll; $root.MATERIALS.updateMapData()">
+          ALL
+      </button>
+      <button
+        type="button"
+        class="btn btn-default btn-xs"
+        style="position: relative; bottom: 2px;"
+        ng-class="{'active': $root.NONTAGGED}"
+        ng-click="$root.NONTAGGED = !$root.NONTAGGED; $root.MATERIALS.updateMapData('nontagged')">
+          non-tagged
+      </button>
+      <ons-checkbox class="pointer" ng-repeat="tag in $root.TAGS.data" ng-model="tag.checked" ng-click="$root.MATERIALS.updateMapData()">
+        {{tag.name}}
+      </ons-checkbox>
+    </section>
 
-  <leaflet center="map" markers="$root.MATERIALS.mapData" event-broadcast="events" height="480px" width="100%" full-height></leaflet>
+  <leaflet center="map" markers="$root.MATERIALS.mapData" layers="layers" event-broadcast="events" height="480px" width="100%" full-height></leaflet>
+
+  </div>
+  <pageslide ng-controller="mmMaterialCtrl" ps-open="material.isSet">
+    <div class="content">
+      <div class="row">&nbsp;</div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <i class="fa fa-arrow-right fa-2x pointer" ng-click="material.unset()"></i>
+          <button
+            type="button"
+            class="btn btn-default"
+            ng-click="edit(material.focused)">
+              Edit
+          </button>
+          <button
+            type="button"
+            class="close pull-right"
+            style="outline: none;"
+            ng-click="$root.MATERIALS.remove($event, material.focused)">
+              <span aria-hidden="true">&times;</span><span class="sr-only">Remove</span>
+          </button>
+        </div>
+        <div class="col-md-1">
+        </div>
+      </div>
+      <div style="padding: 10px;" ng-include="'templates/materialShow.html'"></div>
+    </div>
+  </pageslide>
 </ons-page>

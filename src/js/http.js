@@ -18,10 +18,13 @@
         http._post(type + '/add', data, success, failure);
       },
 
-      sendFile: function(link, file, data, success, failure) {
+      sendFile: function(link, file, data, success, failure, type) {
+        if (angular.isUndefined(type)) {
+          type = 'POST';
+        }
         $upload.upload({
           url: http.namespace + link,
-          method: 'POST',
+          method: type,
           data: data,
           file: file,
         }).success(function(data, status, headers, config) {

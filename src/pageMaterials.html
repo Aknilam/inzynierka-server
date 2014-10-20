@@ -43,11 +43,16 @@
           ng-include="'templates/materialForm.html'"
           ng-init="submit = $root.MATERIALS.add; action='Add'">
         </div>
+        <div
+          ng-include="'templates/materialShow.html'"
+          ng-init="submit = $root.MATERIALS.add; action='Add'">
+        </div>
       </div>
       <div class="col-md-6">
         <button type="button" class="btn btn-default" ng-click="editable = !editable">Edit</button>
+        <button type="button" ng-class="{'active': closeOthers}" class="btn btn-default" ng-click="closeOthers = !closeOthers">Close others</button>
         <div class="list-element" full-height>
-          <accordion close-others="true">
+          <accordion close-others="closeOthers">
             <accordion-group ng-repeat="material in $root.MATERIALS.mapData | orderObjectBy:'name'">
               <accordion-heading>
                 <span ng-show="!editable">

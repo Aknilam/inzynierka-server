@@ -50,6 +50,38 @@
 
       $scope.map = MAP;
 
+      $scope.layers = {
+        baselayers: {
+          osm: {
+            name: 'OpenStreetMap',
+            type: 'xyz',
+            url: '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            layerOptions: {
+              // subdomains: ['a', 'b', 'c'],
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              continuousWorld: true
+            }
+          },
+          cycle: {
+            name: 'OpenCycleMap',
+            type: 'xyz',
+            url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+            layerOptions: {
+              subdomains: ['a', 'b', 'c'],
+              attribution: '&copy; <a href="http://www.opencyclemap.org/copyright">OpenCycleMap</a> contributors - &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+              continuousWorld: true
+            }
+          }
+        },
+        overlays: {
+          project: {
+            name: 'project',
+            type: 'markercluster',
+            visible: true
+          },
+        }
+      };
+
       $scope.events = {
         map: {
             enable: ['click'],
@@ -87,6 +119,46 @@
           // args.markerName
         }
       });
+
+      $scope.edit = function(material) {
+        var file;
+        var modalInstance = $modal.open({
+          templateUrl: 'templates\\editMaterialModal.html',
+          controller: function ($scope, $modalInstance) {
+            $scope.material = material;
+
+            $scope.onFileSelect = function($files, where) {
+              var fileInside = $files[0];
+              if (angular.isDefined(fileInside)) {
+                file = fileInside;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                  $(where).attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+              }
+            };
+
+            $scope.loadMaterialImage = function(where) {
+              if (angular.isDefined(material.fileName) && material.fileName !== null && material.fileName !== '') {
+                $(where).attr('src', 'materials/' + PROJECT.actual.folderName + '/' + material.fileName);
+              }
+            };
+
+            $scope.ok = function() {
+              $modalInstance.close();
+            };
+
+            $scope.cancel = function () {
+              $modalInstance.dismiss('cancel');
+            };
+          }
+        });
+
+        modalInstance.result.then(function() {
+          MATERIALS.edit(material, file);
+        });
+      };
   }]);
 
   mmMap.directive('focus', ['$timeout', function($timeout) {

@@ -149,6 +149,9 @@
 
   dep('leaflet\\dist\\leaflet-src.js');
   dep('leaflet-plugins\\layer\\Marker.Rotate.js');
+  dep('leaflet.markercluster\\dist\\leaflet.markercluster-src.js');
+  dep('leaflet.markercluster\\dist\\MarkerCluster.css');
+  dep('leaflet.markercluster\\dist\\MarkerCluster.Default.css');
   dep('leaflet\\dist\\leaflet.css');
   dep('leaflet\\dist\\images\\*', 'images', undefined, true);
   dep('angular-leaflet-directive\\dist\\angular-leaflet-directive.js');
