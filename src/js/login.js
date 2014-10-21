@@ -86,7 +86,8 @@
           }
 
           if (mmLogin.state === states.authorized) {
-            http.post('changePassword', {password: CryptoJS.MD5(password).toString()}, function(serverAnswer, status) {
+            password = CryptoJS.MD5(password).toString();
+            http.post('changePassword', {password: password}, function(serverAnswer, status) {
               if (status === answer.status.success) {
                 var d = new Date();
                 d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));

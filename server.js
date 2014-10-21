@@ -32,6 +32,13 @@ app.configure( function() {
   app.use(express.session({store: sessionStore, secret: 'ProjektInzynierski', key: 'express.sid'}));
 });
 
+// app.use(function (req, res, next) {
+//     // Website you wish to allow to connect
+//     res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1');
+//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//     next();
+// });
+
 // Routes
 app.get(namespace, basicRoute.hello);
 
