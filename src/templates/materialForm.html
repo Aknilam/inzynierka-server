@@ -22,8 +22,8 @@
     <label>Photo</label>
     <input type="file"
       class="btn btn-default"
-      ng-file-select="setSelectedFile($files, '#toShowImage')"
+      ng-file-select="setSelectedFile($files, '#' + imageId)"
       accept="image/*">
-    <img id="toShowImage" ng-init="loadImage('#toShowImage')" style="max-height: 200px; max-width: 100%;" />
+    <img ng-attr-id="{{imageId}}" ng-init="loadImage('#' + imageId, selected)" style="max-height: 200px; max-width: 100%;" />
   </div>
 </form>

@@ -20,12 +20,13 @@
     '$rootScope',
     '$scope',
     '$modal',
+    '$timeout',
     'leafletEvents',
     'mmMap',
     'mmMaterials',
     'mmMaterial',
     'mmProject',
-    function($rootScope, $scope, $modal, leafletEvents, MAP, MATERIALS, MATERIAL, PROJECT) {
+    function($rootScope, $scope, $modal, $timeout, leafletEvents, MAP, MATERIALS, MATERIAL, PROJECT) {
       $rootScope.ALL = true;
       $scope.editMaterial = false;
 
@@ -139,9 +140,15 @@
               }
             };
 
-            $scope.loadMaterialImage = function(where) {
+            $scope.loadMaterialImage = function(where, material) {
+              console.log(material);
               if (angular.isDefined(material.fileName) && material.fileName !== null && material.fileName !== '') {
-                $(where).attr('src', 'materials/' + PROJECT.actual.folderName + '/' + material.fileName);
+                console.log('set value');
+                console.log('materials/' + PROJECT.actual.folderName + '/' + material.fileName);
+                console.log($(where));
+                $timeout(function() {
+                  $(where).attr('src', 'materials/' + PROJECT.actual.folderName + '/' + material.fileName);
+                }, 0);
               }
             };
 

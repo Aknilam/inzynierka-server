@@ -358,7 +358,37 @@
     }
   ]);
 
-  mmMaterials.controller('mmMaterialsCtrl', ['$scope', 'mmMaterials', function($scope, mmMaterials) {
+  mmMaterials.controller('mmMaterialsCtrl', ['$scope', 'mmMaterials', 'mmProject', function($scope, MATERIALS, PROJECT) {
+    var actualFile;
+    $scope.actualMaterial = undefined;
+    $scope.imageName = 'toShowImage'; 
+
+    $scope.onFileSelect = function($files, where) {
+      var fileInside = $files[0];
+      if (angular.isDefined(fileInside)) {
+        actualFile = fileInside;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $(where).attr('src', e.target.result);
+        };
+        reader.readAsDataURL(actualFile);
+      }
+    };
+
+    $scope.setMaterial = function(material) {
+      console.log('setMaterial');
+      $scope.actualMaterial = material;
+      actualFile = undefined;
+      if (angular.isDefined(material.fileName) && material.fileName !== null && material.fileName !== '') {
+        $('#' + $scope.imageName).attr('src', 'materials/' + PROJECT.actual.folderName + '/' + material.fileName);
+      } else {
+        $('#' + $scope.imageName).attr('src', '');
+      }
+    };
+
+    $scope.save = function() {
+      MATERIALS.edit($scope.actualMaterial, actualFile);
+    };
   }]);
 
   mmMaterials.directive('mmAngle', [function() {

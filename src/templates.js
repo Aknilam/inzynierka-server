@@ -2,7 +2,7 @@ angular.module('templates', []).run(['$templateCache', function($templateCache) 
   'use strict';
 
   $templateCache.put('templates/addMaterialModal.html',
-    "<div class=modal-content><div class=modal-header><button type=button class=close ng-click=cancel()>&times;</button><h4 class=modal-title>Add a new material</h4></div><div class=modal-body><div ng-include=\"'templates/materialForm.html'\" ng-init=\"submit = ok; selected = $root.MATERIALS.data.selected; setSelectedFile = $root.MATERIALS.setSelectedFile; loadImage = $root.MATERIALS.loadImage;\"></div><div class=modal-footer><button type=submit ng-click=ok() class=\"btn btn-success\">Add material</button> <button type=button class=\"btn btn-default\" ng-click=cancel()>Cancel</button></div></div></div>"
+    "<div class=modal-content><div class=modal-header><button type=button class=close ng-click=cancel()>&times;</button><h4 class=modal-title>Add a new material</h4></div><div class=modal-body><div ng-include=\"'templates/materialForm.html'\" ng-init=\"submit = ok; imageId = 'toShowImage'; selected = $root.MATERIALS.data.selected; setSelectedFile = $root.MATERIALS.setSelectedFile; loadImage = $root.MATERIALS.loadImage;\"></div><div class=modal-footer><button type=submit ng-click=ok() class=\"btn btn-success\">Add material</button> <button type=button class=\"btn btn-default\" ng-click=cancel()>Cancel</button></div></div></div>"
   );
 
 
@@ -17,14 +17,14 @@ angular.module('templates', []).run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('templates/editMaterialModal.html',
-    "<div class=modal-content><div class=modal-header><button type=button class=close ng-click=cancel()>&times;</button><h4 class=modal-title>Edit material</h4></div><div class=modal-body><div ng-include=\"'templates/materialForm.html'\" ng-init=\"submit = ok; selected = material; setSelectedFile = onFileSelect; loadImage = loadMaterialImage;\"></div></div><div class=modal-footer><button type=submit ng-click=ok() class=\"btn btn-success\">Save</button> <button type=button class=\"btn btn-default\" ng-click=cancel()>Cancel</button></div></div>"
+    "<div class=modal-content><div class=modal-header><button type=button class=close ng-click=cancel()>&times;</button><h4 class=modal-title>Edit material</h4></div><div class=modal-body><div ng-include=\"'templates/materialForm.html'\" ng-init=\"submit = ok; imageId = 'toShowImage'; selected = material; setSelectedFile = onFileSelect; loadImage = loadMaterialImage;\"></div></div><div class=modal-footer><button type=submit ng-click=ok() class=\"btn btn-success\">Save</button> <button type=button class=\"btn btn-default\" ng-click=cancel()>Cancel</button></div></div>"
   );
 
 
   $templateCache.put('templates/materialForm.html',
     "<form role=form ng-submit=submit()><div class=form-group><label>Name</label><input type=text ng-model=selected.name placeholder=Name class=form-control focus=true></div><div class=form-group><label>Description</label><textarea type=text ng-model=selected.description placeholder=Description class=form-control>\r" +
     "\n" +
-    "    </textarea></div><div class=form-group><label>Position</label><div>({{selected.lat}}, {{selected.lng}})</div></div><div class=form-group><label>Angle</label><div>{{selected.iconAngle}}</div><div style=\"width: 100%\" mm-angle=selected.iconAngle></div><canvas width=60 height=60 id=canvas mm-compass=selected.iconAngle></canvas></div><div class=form-group><label>Photo</label><input type=file class=\"btn btn-default\" ng-file-select=\"setSelectedFile($files, '#toShowImage')\" accept=image/*><img id=toShowImage ng-init=\"loadImage('#toShowImage')\" style=\"max-height: 200px; max-width: 100%\"></div></form>"
+    "    </textarea></div><div class=form-group><label>Position</label><div>({{selected.lat}}, {{selected.lng}})</div></div><div class=form-group><label>Angle</label><div>{{selected.iconAngle}}</div><div style=\"width: 100%\" mm-angle=selected.iconAngle></div><canvas width=60 height=60 id=canvas mm-compass=selected.iconAngle></canvas></div><div class=form-group><label>Photo</label><input type=file class=\"btn btn-default\" ng-file-select=\"setSelectedFile($files, '#' + imageId)\" accept=image/*><img ng-attr-id={{imageId}} ng-init=\"loadImage('#' + imageId, selected)\" style=\"max-height: 200px; max-width: 100%\"></div></form>"
   );
 
 
