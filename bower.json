@@ -21,7 +21,8 @@
     "font-awesome": "4.2.0",
     "underscore": "1.6.0",
     "angular-pageslide-directive": "0.1.8",
-    "CryptoJS": "https://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip"
+    "CryptoJS": "https://crypto-js.googlecode.com/files/CryptoJS%20v3.1.2.zip",
+    "exif-js": "https://github.com/jseidelin/exif-js/archive/fdf760cf40ae24749a8b7f8ab6550bd98fd70539.zip"
   },
   "devDependencies": {
     "angular-mocks": "1.2.25",

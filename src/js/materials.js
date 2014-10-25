@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var mmMaterials = angular.module('mmMaterials', ['mmProject', 'mmMaterial', 'mmTags', 'mmHttp', 'mmAlert', 'mmAnswer']);
+  var mmMaterials = angular.module('mmMaterials', ['mmProject', 'mmMaterial', 'mmTags', 'mmHttp', 'mmAlert', 'mmAnswer', 'mmImg']);
 
   mmMaterials.factory('mmMaterials', ['$rootScope', '$modal', 'mmProject', 'mmMaterial', 'mmTags', 'mmHttp', 'mmAlert', 'mmAnswer',
     function($rootScope, $modal, PROJECT, MATERIAL, TAGS, http, alert, answer) {
@@ -358,7 +358,7 @@
     }
   ]);
 
-  mmMaterials.controller('mmMaterialsCtrl', ['$scope', 'mmMaterials', 'mmProject', function($scope, MATERIALS, PROJECT) {
+  mmMaterials.controller('mmMaterialsCtrl', ['$rootScope', '$scope', 'mmMaterials', 'mmMaterial', 'mmProject', 'mmImg', function($rootScope, $scope, MATERIALS, MATERIAL, PROJECT, img) {
     var actualFile;
     $scope.actualMaterial = undefined;
     $scope.imageName = 'toShowImage'; 
@@ -372,11 +372,14 @@
           $(where).attr('src', e.target.result);
         };
         reader.readAsDataURL(actualFile);
+
+        img.getFileExif(actualFile).then(function(exif) {
+          console.log(exif);
+        });
       }
     };
 
     $scope.setMaterial = function(material) {
-      console.log('setMaterial');
       $scope.actualMaterial = material;
       actualFile = undefined;
       if (angular.isDefined(material.fileName) && material.fileName !== null && material.fileName !== '') {
@@ -388,6 +391,12 @@
 
     $scope.save = function() {
       MATERIALS.edit($scope.actualMaterial, actualFile);
+    };
+
+    $scope.gotoMap = function(material) {
+      $rootScope.setPosition(material.lat, material.lng);
+      MATERIAL.set(material);
+      $scope.ons.slidingMenu.setAbovePage('navigatorMap.html');
     };
   }]);
 

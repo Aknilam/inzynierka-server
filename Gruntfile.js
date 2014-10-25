@@ -173,6 +173,8 @@
 
   dep('CryptoJS\\rollups\\md5.js');
 
+  dep('exif-js\\exif.js');
+
   src('js\\*.js');
   src('css\\*.css');
 

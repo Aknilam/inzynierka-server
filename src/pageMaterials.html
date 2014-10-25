@@ -43,6 +43,7 @@
           Please select one of materials from the list.
         </div>
         <div ng-show="actualMaterial">
+          <button type="button" class="btn btn-default" ng-click="gotoMap(actualMaterial)">Go to map</button>
           <form role="form" ng-submit="submit()">
             <div class="form-group">
               <label>Name</label>

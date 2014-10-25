@@ -3,16 +3,42 @@
   var mmMap = angular.module('mmMap', [
     'leaflet-directive',
     'mmMaterials',
-    'mmMaterial'
+    'mmMaterial',
+    'mmImg'
   ]);
   
-  mmMap.factory('mmMap', [function() {
+  mmMap.factory('mmMap', ['$rootScope', function($rootScope) {
     var mmMap = {
       lat: 51.133253392421864,
       lng: 17.02815246582033,
       zoom: 12,
-      pan: 'y'
+      pan: 'y',
+      memory: undefined,
+      setPosition: function(lat, lng) {
+        mmMap.memory = {
+          lat: lat,
+          lng: lng,
+          zoom: 18
+        };
+      },
+      setMapImmediade: function(lat, lng) {
+        mmMap.lat = lat;
+        mmMap.lng = lng;
+        mmMap.zoom = 18;
+        return mmMap;
+      },
+      getMap: function() {
+        if (angular.isDefined(mmMap.memory)) {
+          mmMap.lat = mmMap.memory.lat;
+          mmMap.lng = mmMap.memory.lng;
+          mmMap.zoom = mmMap.memory.zoom;
+          delete mmMap.memory;
+        }
+        return mmMap;
+      }
     };
+    $rootScope.setPosition = mmMap.setPosition;
+    $rootScope.setMapImmediade = mmMap.setMapImmediade;
     return mmMap;
   }]);
   
@@ -26,9 +52,12 @@
     'mmMaterials',
     'mmMaterial',
     'mmProject',
-    function($rootScope, $scope, $modal, $timeout, leafletEvents, MAP, MATERIALS, MATERIAL, PROJECT) {
+    'mmImg',
+    function($rootScope, $scope, $modal, $timeout, leafletEvents, MAP, MATERIALS, MATERIAL, PROJECT, img) {
       $rootScope.ALL = true;
       $scope.editMaterial = false;
+
+      $scope.map = MAP;
 
       PROJECT.onSet(function(project) {
         if (project.lat === null ||
@@ -47,9 +76,13 @@
           MAP.lng = project.lng;
           MAP.zoom = project.zoom;
         }
+
+        $scope.map = MAP.getMap();
       });
 
-      $scope.map = MAP;
+      $rootScope.setMapImmediade = function(lat, lng) {
+        $scope.map = MAP.setMapImmediade(lat, lng);
+      };
 
       $scope.layers = {
         baselayers: {
@@ -137,15 +170,20 @@
                   $(where).attr('src', e.target.result);
                 };
                 reader.readAsDataURL(file);
+
+                img.getFileExif(file).then(function(exif) {
+                  console.log(exif);
+                });
               }
             };
 
             $scope.loadMaterialImage = function(where, material) {
-              console.log(material);
               if (angular.isDefined(material.fileName) && material.fileName !== null && material.fileName !== '') {
-                console.log('set value');
-                console.log('materials/' + PROJECT.actual.folderName + '/' + material.fileName);
-                console.log($(where));
+
+                img.getLinkExif('materials/' + PROJECT.actual.folderName + '/' + material.fileName).then(function(exif) {
+                  console.log(exif);
+                });
+
                 $timeout(function() {
                   $(where).attr('src', 'materials/' + PROJECT.actual.folderName + '/' + material.fileName);
                 }, 0);

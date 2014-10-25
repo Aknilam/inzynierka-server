@@ -58,6 +58,12 @@
           </button>
           <button
             type="button"
+            class="btn btn-default"
+            ng-click="$root.setMapImmediade(material.focused.lat, material.focused.lng)">
+              Focus
+          </button>
+          <button
+            type="button"
             class="close pull-right"
             style="outline: none;"
             ng-click="$root.MATERIALS.remove($event, material.focused)">
