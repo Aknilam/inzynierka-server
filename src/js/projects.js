@@ -27,10 +27,13 @@
         mmProjects.data = {};
       },
 
-      add: function(name, description) {
+      add: function(name, description, callback) {
         http.add('projects', {name: name, description: description}, function(project) {
           mmProjects.data[project.id] = mmProjects._create(project);
           alert.success('Added project `' + name + '`');
+          if (angular.isFunction(callback)) {
+            callback(project);
+          }
         });
       },
 

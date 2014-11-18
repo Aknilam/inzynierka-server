@@ -29,6 +29,9 @@ module.exports.add = function(req, res, next) {
 
   if (projectId && name) {
     PROJECT.find({where: {id: projectId}}).then(function(project) {
+      TAG.find({where: {name: name, ProjectId: projectId}}).then(function(data) {
+        console.log(data);
+      });
       if (project) {
         TAG.create({
           name: name

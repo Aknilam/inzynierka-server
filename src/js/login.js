@@ -112,21 +112,21 @@
             return;
           }
 
-          //zakodowanie
-
-          http.post('register', {username: username, password: CryptoJS.MD5(password).toString()}, function(serverAnswer, status) {
-            if (status === answer.status.success) {
-              alert.success('Successfully registered');
-              success(serverAnswer);
-            }
-          }, function(data, status) {
-            if (status === answer.status.error) {
-              alert.warning('Login already exists');
-            }
-          });
+          if (mmLogin.state === states.unauthorized) {
+            http.post('register', {username: username, password: CryptoJS.MD5(password).toString()}, function(serverAnswer, status) {
+              if (status === answer.status.success) {
+                alert.success('Successfully registered');
+                success(serverAnswer);
+              }
+            }, function(data, status) {
+              if (status === answer.status.error) {
+                alert.warning('Login already exists');
+              }
+            });
+          }
         },
 
-        checkCookies: function() {
+        _checkCookies: function() {
           if (angular.isDefined($cookies.mmLoginL) && angular.isDefined($cookies.mmLoginP)) {
             mmLogin.login($cookies.mmLoginL, $cookies.mmLoginP, function() {
               $rootScope.ons.slidingMenu.setAbovePage('navigatorProjects.html');
@@ -135,7 +135,7 @@
         }
 
       };
-      mmLogin.checkCookies();
+      mmLogin._checkCookies();
       return mmLogin;
     }
   ]);

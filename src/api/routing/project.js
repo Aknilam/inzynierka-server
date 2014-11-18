@@ -11,7 +11,7 @@ module.exports.isOwner = function(req, res, next) {
   var userId = req.session.userId;
 
   PROJECT.find({where: {id: id}}).success(function(project) {
-    if (project.owner === userId) {
+    if (project && project.owner === userId) {
       next();
     } else {
       return res.forbidden();
@@ -25,11 +25,18 @@ module.exports.isMember = function(req, res, next) {
   if (projectId) {
     PROJECT.find({where: {id: projectId}}).success(function(project) {
       if (project) {
+        var done = false;
+
         project.getUsers().success(function(users) {
           for (var i in users) {
             if (users[i].dataValues.id === userId) {
+              done = true;
               next();
             }
+          }
+
+          if (!done) {
+            return res.forbidden();
           }
         });
       } else {
@@ -47,11 +54,18 @@ module.exports.isAdmin = function(req, res, next) {
   if (projectId && userId) {
     PROJECT.find({where: {id: projectId}}).success(function(project) {
       if (project) {
+        var done = false;
+
         project.getUsers().success(function(users) {
           for (var i in users) {
             if (users[i].dataValues.id === userId && (users[i].ProjectUsers.role === 'admin' || users[i].ProjectUsers.role === 'owner' || project.owner === userId)) {
+              done = true;
               next();
             }
+          }
+
+          if (!done) {
+            return res.forbidden();
           }
         });
       } else {
@@ -103,7 +117,7 @@ module.exports.enter = function(req, res, next) {
               var amIAdmin = false;
               for (var i in users) {
                 toReturn.push(shareUser(users[i]));
-                if (userId === users[i].dataValues.id && users[i].ProjectUsers.role === 'admin') {
+                if (userId === users[i].dataValues.id && (users[i].ProjectUsers.role === 'admin' || users[i].ProjectUsers.role === 'owner')) {
                   amIAdmin = true;
                 }
               }

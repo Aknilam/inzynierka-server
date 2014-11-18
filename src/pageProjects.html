@@ -42,7 +42,7 @@
               class="pointer-bootstrap list-group-item"
               ng-click="$root.PROJECT.set(project); ons.slidingMenu.setAbovePage('navigatorMap.html')">
                 {{project.name}}
-                <button type="button" class="close pull-right" style="outline: none;" ng-click="$root.PROJECTS.remove($event, project)"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
+                <button type="button" class="close pull-right" style="outline: none;" ng-show="$root.LOGIN.me.id === project.owner" ng-click="$root.PROJECTS.remove($event, project)"><span aria-hidden="true">&times;</span><span class="sr-only">Remove</span></button>
             </li>
           </ul>
         </div>

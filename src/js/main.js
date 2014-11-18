@@ -53,6 +53,28 @@
 			$rootScope.TAGS = TAGS;
 
 			$rootScope.MATERIALS = MATERIALS;
+/*
+      $rootScope.addProject = function(name) {
+        var longvalue = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+        PROJECTS.add(name, longvalue, function(project) {
+          PROJECT.onSet(function() {
+            for (var i = 0; i < 500; i++) {
+              MATERIALS.add({
+                name: longvalue,
+                description: longvalue,
+                lat: 120,
+                lng: 120,
+                iconAngle: 120
+              });
+            }
+
+            for (var j = 0; j < 600; j++) {
+              TAGS.add(longvalue);
+            }
+          });
+          PROJECT.set(project);
+        });
+      };*/
 	}]);
 
   mmApp.directive('fullHeight', ['$window', function($window) {

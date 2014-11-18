@@ -62,7 +62,7 @@ app.post(namespace + 'tags/add', loginRoute.isLoggedIn, projectRoute.isMember, p
 
 app.put(namespace + 'tags/edit/:id', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, tagRoute.edit);
 
-app.delete(namespace + 'tags/remove/:id', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, tagRoute.remove);
+app.delete(namespace + 'tags/remove/:id', loginRoute.isLoggedIn, projectRoute.isAdmin, projectRoute.isEditable, tagRoute.remove);
 
 // Materials
 app.get(namespace + 'materials/get/:id', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, materialRoute.get);
@@ -75,7 +75,7 @@ app.post(namespace + 'materials/add/tag', loginRoute.isLoggedIn, projectRoute.is
 
 app.put(namespace + 'materials/edit/:id', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, materialRoute.edit);
 
-app.delete(namespace + 'materials/remove/:id', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, materialRoute.remove);
+app.delete(namespace + 'materials/remove/:id', loginRoute.isLoggedIn, projectRoute.isAdmin, projectRoute.isEditable, materialRoute.remove);
 
 app.delete(namespace + 'materials/remove/tag/:material/:tag', loginRoute.isLoggedIn, projectRoute.isMember, projectRoute.isEditable, materialRoute.removeTag);
 
@@ -109,6 +109,7 @@ app.delete(namespace + 'projects/remove/:id', loginRoute.isLoggedIn, projectRout
 // Database
 app.get(namespace + 'generateDatabase', initRoute.generateDev);
 
-app.listen(config.port, function() {});
+app.listen(config.port, function() {
+});
 
 module.exports = app;

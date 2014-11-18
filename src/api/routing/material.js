@@ -23,7 +23,7 @@ module.exports.getA = function(req, res, next) {
 module.exports.getAll = function(req, res, next) {
   var projectId = req.session.projectId;
 
-  console.log(projectId);
+  //console.log(projectId);
   if (projectId) {
     PROJECT.find({where: {id: projectId}}).success(function(project) {
       project.getMaterials().success(function(materials) {
@@ -71,7 +71,7 @@ module.exports.getAll = function(req, res, next) {
 var folderBase = 'src\\materials\\';
 
 var saveFile = function(folderName, file, callback, name) {
-  console.log('save file');
+  //console.log('save file');
   fs.readFile(file.path, function (err, data) {
     var extention = file.name.split('.').pop();
     if (extention) {
@@ -92,7 +92,7 @@ var saveFile = function(folderName, file, callback, name) {
 
 module.exports.add = function(req, res, next) {
 
-  console.log(req.body);
+  //console.log(req.body);
   var projectId = req.session.projectId;
   var lat = req.body.lat;
   var lng = req.body.lng;
@@ -102,7 +102,7 @@ module.exports.add = function(req, res, next) {
   var tags = JSON.parse(req.body.tags);
 
   var onSaveFile = function(project, lat, lng, name, description, angle, tags) {
-    console.log('onSaveFile');
+    //console.log('onSaveFile');
     return function(fileName) {
       MATERIAL.create({
         name: name,
@@ -151,7 +151,7 @@ module.exports.edit = function(req, res) {
   var rMaterial = req.body;
 
   var onSaveFile = function(id, reqMaterial) {
-    console.log('onSaveFile');
+    //console.log('onSaveFile');
     return function(fileName) {
       MATERIAL.find({where: {id: id}}).success(function(material) {
         material.updateAttributes({
@@ -170,7 +170,7 @@ module.exports.edit = function(req, res) {
 
   if (id && rMaterial) {
     if (req.files && req.files.file) {
-      console.log('file received');
+      //console.log('file received');
       PROJECT.find({where: {id: projectId}}).success(function(project) {
         saveFile(project.folderName, req.files.file, onSaveFile(id, rMaterial), rMaterial.fileName);
       });

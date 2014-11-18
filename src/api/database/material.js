@@ -3,6 +3,7 @@ var sequelize = require('./config.js').sequelize;
 
 var MATERIAL = sequelize.define('Materials', {
   name: Sequelize.STRING,
+  //creator: Sequelize.INTEGER,
   description: Sequelize.STRING,
   lat: Sequelize.FLOAT,
   lng: Sequelize.FLOAT,
