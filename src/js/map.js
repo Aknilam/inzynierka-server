@@ -59,6 +59,11 @@
 
       $scope.map = MAP;
 
+      $scope.defaults = {
+        doubleClickZoom: false,
+        scrollWheelZoom: true
+      };
+
       PROJECT.onSet(function(project) {
         if (project.lat === null ||
           angular.isUndefined(project.lat) ||
@@ -118,12 +123,12 @@
 
       $scope.events = {
         map: {
-            enable: ['click'],
+            enable: ['dblclick'],
             logic: "emit"
         }
       };
 
-      $scope.$on("leafletDirectiveMap.click", function(event, args) {
+      $scope.$on("leafletDirectiveMap.dblclick", function(event, args) {
         var leafEvent = args.leafletEvent;
 
         MATERIALS.setSelected(leafEvent.latlng.lat, leafEvent.latlng.lng);

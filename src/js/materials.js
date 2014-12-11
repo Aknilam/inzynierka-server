@@ -140,7 +140,7 @@
             lat,
             lng,
             angle;
-
+console.log(material);
           if (angular.isDefined(material)) {
             name = material.name;
             description = material.description;

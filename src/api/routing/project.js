@@ -173,7 +173,7 @@ module.exports.add = function(req, res, next) {
   var description = req.body.description;
   var userId = req.session.userId;
   var folderName = createFolder(Math.random().toString(36).slice(2));
-  var accessCode = Math.random().toString(36).slice(2);
+  var accessCode = (Math.random().toString(36).slice(2)).substr(0, 8);
 
   if (name && folderName) {
     PROJECT.create({
@@ -191,7 +191,9 @@ module.exports.add = function(req, res, next) {
       if (project) {
         USER.find({where: {id: userId}}).success(function(user) {
           project.addUser(user, {role: 'owner'});
-          res.send(shareProject(project));
+          var toReturn = shareProject(project);
+          toReturn.accessCode = project.accessCode;
+          res.send(toReturn);
         });
       }
     });
